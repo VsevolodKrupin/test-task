@@ -1,6 +1,7 @@
 package com.work.api.main.entities;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * @author Vsevolod Krupin
@@ -13,45 +14,22 @@ public class PhoneBook
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long bookId;
 
-    @Column(name = "phone_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long phoneId;
+    @Column(name = "phones")
+    @ElementCollection(targetClass=String.class)
+    private Set<String> phone;
 
-    @Column(name = "phone")
-    private String phone;
-
-    @ManyToOne
-    @JoinColumn(columnDefinition = "user_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
     private User user;
 
     public PhoneBook(){}
 
-    public long getBookId()
-    {
-        return bookId;
-    }
-
-    public void setBookId(long bookId)
-    {
-        this.bookId = bookId;
-    }
-
-    public long getPhoneId()
-    {
-        return phoneId;
-    }
-
-    public void setPhoneId(long phoneId)
-    {
-        this.phoneId = phoneId;
-    }
-
-    public String getPhone()
+    public Set<String> getPhone()
     {
         return phone;
     }
 
-    public void setPhone(String phone)
+    public void setPhone(Set<String> phone)
     {
         this.phone = phone;
     }

@@ -1,5 +1,7 @@
 package com.work.api.main.controllers;
 
+
+import com.work.api.main.entities.PhoneBook;
 import com.work.api.main.entities.User;
 import com.work.api.main.repos.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author Vsevolod Krupin
@@ -17,16 +21,19 @@ import java.util.Optional;
 @RequestMapping("/api/users")
 public class UserController
 {
+    Set<PhoneBook> setOfBooks = new HashSet<PhoneBook>();
+
+
     @Autowired
     UserRepository userRepository;
 
-    @GetMapping
+    @GetMapping("/get")
     public List<User> findAllUsers()
     {
         return (List<User>) userRepository.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<User> findUserById(@PathVariable(value = "id") long id)
     {
         Optional<User> user = userRepository.findById(id);
@@ -40,8 +47,25 @@ public class UserController
         }
     }
 
-    @PostMapping
-    public User saveUser(@Validated @RequestBody User user){
+    @PostMapping("/save")
+    public User saveUser(@Validated @RequestBody User user)
+    {
         return userRepository.save(user);
+    }
+
+    @PostMapping("/edit/{id}")
+    public ResponseEntity<User> editUser(@PathVariable(value = "id") long id, @Validated @RequestBody User user)
+    {
+        Optional<User> userToEdit = userRepository.findById(id);
+
+        if (userToEdit.isPresent())
+        {
+            userToEdit.get().setBooks(user.getBooks());
+            userToEdit.get().setName(user.getName());
+            return ResponseEntity.ok().body(userToEdit.get());
+        } else
+        {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

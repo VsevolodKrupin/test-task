@@ -1,7 +1,11 @@
 package com.work.api.main.entities;
 
+
+import com.sun.istack.NotNull;
+import com.sun.istack.Nullable;
+
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 
 /**
@@ -14,11 +18,33 @@ public class User
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id_user;
+
+    @NotNull
+    private String name;
+
     @OneToMany(mappedBy = "user")
-    private Set<PhoneBook> books;
+    @Nullable
+    @ElementCollection(targetClass = PhoneBook.class)
+    private List<PhoneBook> books;
 
     public User()
     {
+    }
+
+    public User(long id_user, List<PhoneBook> books)
+    {
+        this.id_user = id_user;
+        this.books = books;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
     }
 
     public long getId_user()
@@ -31,12 +57,12 @@ public class User
         this.id_user = id_user;
     }
 
-    public Set<PhoneBook> getBooks()
+    public List<PhoneBook> getBooks()
     {
         return books;
     }
 
-    public void setBooks(Set<PhoneBook> books)
+    public void setBooks(List<PhoneBook> books)
     {
         this.books = books;
     }
