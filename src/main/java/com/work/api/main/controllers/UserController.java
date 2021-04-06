@@ -1,7 +1,6 @@
 package com.work.api.main.controllers;
 
 
-import com.work.api.main.entities.PhoneBook;
 import com.work.api.main.entities.User;
 import com.work.api.main.repos.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * @author Vsevolod Krupin
@@ -21,9 +18,6 @@ import java.util.Set;
 @RequestMapping("/api/users")
 public class UserController
 {
-    Set<PhoneBook> setOfBooks = new HashSet<PhoneBook>();
-
-
     @Autowired
     UserRepository userRepository;
 
@@ -60,7 +54,7 @@ public class UserController
 
         if (userToEdit.isPresent())
         {
-            userToEdit.get().setBooks(user.getBooks());
+            userToEdit.get().setBook(user.getBook());
             userToEdit.get().setName(user.getName());
             return ResponseEntity.ok().body(userToEdit.get());
         } else

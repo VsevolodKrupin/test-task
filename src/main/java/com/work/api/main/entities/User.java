@@ -5,7 +5,6 @@ import com.sun.istack.NotNull;
 import com.sun.istack.Nullable;
 
 import javax.persistence.*;
-import java.util.List;
 
 
 /**
@@ -16,25 +15,29 @@ import java.util.List;
 public class User
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id_user;
 
     @NotNull
     private String name;
 
-    @OneToMany(mappedBy = "user")
     @Nullable
-    @ElementCollection(targetClass = PhoneBook.class)
-    private List<PhoneBook> books;
+    @OneToOne
+    private PhoneBook book;
 
     public User()
     {
     }
 
-    public User(long id_user, List<PhoneBook> books)
+    public User(long id_user, PhoneBook book)
     {
         this.id_user = id_user;
-        this.books = books;
+        this.book = book;
+    }
+
+    public void setBook(PhoneBook book)
+    {
+        this.book = book;
     }
 
     public String getName()
@@ -57,13 +60,8 @@ public class User
         this.id_user = id_user;
     }
 
-    public List<PhoneBook> getBooks()
+    public PhoneBook getBook()
     {
-        return books;
-    }
-
-    public void setBooks(List<PhoneBook> books)
-    {
-        this.books = books;
+        return book;
     }
 }

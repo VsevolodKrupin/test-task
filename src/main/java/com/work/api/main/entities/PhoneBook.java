@@ -1,6 +1,8 @@
 package com.work.api.main.entities;
 
+
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -11,36 +13,35 @@ import java.util.Set;
 public class PhoneBook
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long bookId;
 
     @Column(name = "phones")
-    @ElementCollection(targetClass=String.class)
-    private Set<String> phone;
+    @ElementCollection(targetClass = String.class)
+    private List<String> phone;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User user;
+    public long getBookId()
+    {
+        return bookId;
+    }
 
-    public PhoneBook(){}
+    public void setBookId(long bookId)
+    {
+        this.bookId = bookId;
+    }
 
-    public Set<String> getPhone()
+    public PhoneBook()
+    {
+    }
+
+    public List<String> getPhone()
     {
         return phone;
     }
 
-    public void setPhone(Set<String> phone)
+    public void setPhone(List<String> phone)
     {
         this.phone = phone;
     }
 
-    public User getUser()
-    {
-        return user;
-    }
-
-    public void setUser(User user)
-    {
-        this.user = user;
-    }
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 /**
  * @author Vsevolod Krupin
  */
-@Repository
+
 public interface PhoneBookRepository extends CrudRepository<PhoneBook, Long>
 {
 }

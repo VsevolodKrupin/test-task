@@ -53,7 +53,6 @@ public class BooksController
         if (bookToEdit.isPresent())
         {
             bookToEdit.get().setPhone(phoneBook.getPhone());
-            bookToEdit.get().setUser(phoneBook.getUser());
 
             return ResponseEntity.ok().body(bookToEdit.get());
         } else
