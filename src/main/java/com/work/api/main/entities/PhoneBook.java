@@ -1,6 +1,8 @@
 package com.work.api.main.entities;
 
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +21,9 @@ public class PhoneBook
     @Column(name = "phones")
     @ElementCollection(targetClass = String.class)
     private List<String> phone;
+
+    @OneToOne(mappedBy = "book")
+    private User user;
 
     public long getBookId()
     {

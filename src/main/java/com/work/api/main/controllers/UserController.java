@@ -2,6 +2,7 @@ package com.work.api.main.controllers;
 
 
 import com.work.api.main.entities.User;
+import com.work.api.main.repos.PhoneBookRepository;
 import com.work.api.main.repos.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,9 @@ public class UserController
 {
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    PhoneBookRepository phoneBookRepository;
 
     @GetMapping("/get")
     public List<User> findAllUsers()
@@ -44,6 +48,7 @@ public class UserController
     @PostMapping("/save")
     public User saveUser(@Validated @RequestBody User user)
     {
+        user.setBook(phoneBookRepository.findById(user.getBook().getBookId()).get());
         return userRepository.save(user);
     }
 

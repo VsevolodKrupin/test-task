@@ -22,17 +22,24 @@ public class User
     private String name;
 
     @Nullable
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "bookId", referencedColumnName = "bookId")
     private PhoneBook book;
 
     public User()
     {
     }
 
-    public User(long id_user, PhoneBook book)
+    public User(long id_user, String name, PhoneBook book)
     {
         this.id_user = id_user;
+        this.name = name;
         this.book = book;
+    }
+
+    public PhoneBook getBook()
+    {
+        return book;
     }
 
     public void setBook(PhoneBook book)
@@ -60,8 +67,4 @@ public class User
         this.id_user = id_user;
     }
 
-    public PhoneBook getBook()
-    {
-        return book;
-    }
 }
