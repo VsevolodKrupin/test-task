@@ -5,6 +5,7 @@ import com.work.api.main.entities.User;
 import com.work.api.main.repos.PhoneBookRepository;
 import com.work.api.main.repos.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -46,10 +47,10 @@ public class UserController
     }
 
     @PostMapping("/save")
-    public User saveUser(@Validated @RequestBody User user)
+    public ResponseEntity<User> saveUser(@Validated @RequestBody User user)
     {
         user.setBook(phoneBookRepository.findById(user.getBook().getBookId()).get());
-        return userRepository.save(user);
+        return ResponseEntity.ok().body(userRepository.save(user));
     }
 
     @PostMapping("/edit/{id}")
@@ -59,9 +60,23 @@ public class UserController
 
         if (userToEdit.isPresent())
         {
-            userToEdit.get().setBook(user.getBook());
+            userToEdit.get().setBook(phoneBookRepository.findById(user.getBook().getBookId()).get());
             userToEdit.get().setName(user.getName());
             return ResponseEntity.ok().body(userToEdit.get());
+        } else
+        {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable(value = "id") long id)
+    {
+        Optional<User> user = userRepository.findById(id);
+
+        if (user.isPresent()){
+            userRepository.deleteById(id);
+            return ResponseEntity.ok().build();
         } else
         {
             return ResponseEntity.notFound().build();

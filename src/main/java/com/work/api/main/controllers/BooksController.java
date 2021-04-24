@@ -40,9 +40,9 @@ public class BooksController
     }
 
     @PostMapping("/save")
-    public PhoneBook savePhoneBook(@Validated @RequestBody PhoneBook phoneBook)
+    public ResponseEntity<PhoneBook> savePhoneBook(@Validated @RequestBody PhoneBook phoneBook)
     {
-        return phoneBookRepository.save(phoneBook);
+        return ResponseEntity.ok().body(phoneBookRepository.save(phoneBook));
     }
 
     @PostMapping("/edit/{id}")
@@ -52,9 +52,22 @@ public class BooksController
 
         if (bookToEdit.isPresent())
         {
-            bookToEdit.get().setPhone(phoneBook.getPhone());
+            bookToEdit.get().setPhones(phoneBook.getPhones());
 
             return ResponseEntity.ok().body(bookToEdit.get());
+        } else
+        {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteBook(@PathVariable(value = "id") long id)
+    {
+        if (phoneBookRepository.findById(id).isPresent())
+        {
+            phoneBookRepository.deleteById(id);
+            return ResponseEntity.ok().build();
         } else
         {
             return ResponseEntity.notFound().build();

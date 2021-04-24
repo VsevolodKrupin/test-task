@@ -1,11 +1,8 @@
 package com.work.api.main.entities;
 
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Vsevolod Krupin
@@ -18,9 +15,11 @@ public class PhoneBook
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long bookId;
 
+
+
     @Column(name = "phones")
     @ElementCollection(targetClass = String.class)
-    private List<String> phone;
+    private List<String> phones;
 
     @OneToOne(mappedBy = "book")
     private User user;
@@ -39,14 +38,14 @@ public class PhoneBook
     {
     }
 
-    public List<String> getPhone()
+    public List<String> getPhones()
     {
-        return phone;
+        return phones;
     }
 
-    public void setPhone(List<String> phone)
+    public void setPhones(List<String> phones)
     {
-        this.phone = phone;
+        this.phones = phones;
     }
 
 }
