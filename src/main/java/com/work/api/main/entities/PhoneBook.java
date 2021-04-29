@@ -15,14 +15,22 @@ public class PhoneBook
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long bookId;
 
-
-
     @Column(name = "phones")
     @ElementCollection(targetClass = String.class)
     private List<String> phones;
 
     @OneToOne(mappedBy = "book")
     private User user;
+
+    public PhoneBook()
+    {
+
+    }
+
+    public PhoneBook(List<String> phones)
+    {
+        this.phones = phones;
+    }
 
     public long getBookId()
     {
@@ -32,10 +40,6 @@ public class PhoneBook
     public void setBookId(long bookId)
     {
         this.bookId = bookId;
-    }
-
-    public PhoneBook()
-    {
     }
 
     public List<String> getPhones()
